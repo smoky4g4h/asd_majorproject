@@ -1,0 +1,13 @@
+import {beforeEach,it,expect,vi} from 'vitest';
+const mocks=vi.hoisted(()=>({cookie:'',header:'',aal:'aal2',db:{} as any}));
+vi.mock('server-only',()=>({}));
+vi.mock('next/headers',()=>({cookies:async()=>({get:()=>mocks.cookie?{value:mocks.cookie}:undefined}),headers:async()=>({get:()=>mocks.header||null})}));
+vi.mock('../lib/supabase/server',()=>({serverClient:async()=>mocks.db}));
+import {requireActor} from '../lib/auth/session';
+const first='00000000-0000-4000-8000-000000000001',second='00000000-0000-4000-8000-000000000002';
+beforeEach(()=>{mocks.cookie='';mocks.header='';mocks.aal='aal2';const q:any={select:()=>q,eq:()=>q,order:async()=>({data:[{organization_id:first,role:'MEMBER'},{organization_id:second,role:'ORG_ADMIN'}],error:null}),single:async()=>({data:{status:'ACTIVE'}})};mocks.db={from:()=>q,auth:{getUser:async()=>({data:{user:{id:'user',identities:[{provider:'google'}]}}}),getClaims:async()=>({data:{claims:{amr:[{method:'oauth'}]}}}),mfa:{getAuthenticatorAssuranceLevel:async()=>({data:{currentLevel:mocks.aal}})}}};});
+it('uses the validated selected organization, not the first membership',async()=>{mocks.cookie=second;expect((await requireActor()).actor.organizationId).toBe(second)});
+it('binds requests to the rendered tab even when another tab changes the cookie',async()=>{mocks.cookie=second;mocks.header=first;expect((await requireActor()).actor.organizationId).toBe(first)});
+it('refuses a forged explicit organization instead of silently changing scope',async()=>{mocks.header='unknown';await expect(requireActor()).rejects.toMatchObject({status:403})});
+it('recovers from a stale cookie when there is no explicit tab scope',async()=>{mocks.cookie='revoked';expect((await requireActor()).actor.organizationId).toBe(first)});
+it('requires MFA when switching to an admin organization',async()=>{mocks.aal='aal1';await expect(requireActor(second)).rejects.toMatchObject({code:'MFA_REQUIRED'});expect((await requireActor(first)).actor.role).toBe('MEMBER')});
