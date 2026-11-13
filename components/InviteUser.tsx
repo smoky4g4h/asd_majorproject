@@ -1,0 +1,13 @@
+'use client';
+import {useWorkspace} from './WorkspaceStore';
+import {useRef,useState,type FormEvent} from 'react';
+export default function InviteUser({role}:{role:string}){
+ const {state}=useWorkspace();
+ const dialog=useRef<HTMLDialogElement>(null);
+ const [busy,setBusy]=useState(false),[error,setError]=useState(''),[link,setLink]=useState(''),[email,setEmail]=useState('');
+ if(!['PLATFORM_ADMIN','ORG_ADMIN'].includes(role))return null;
+ async function submit(event:FormEvent<HTMLFormElement>){event.preventDefault();setBusy(true);setError('');const data=new FormData(event.currentTarget);try{
+ const response=await fetch('/api/users/invite',{method:'POST',headers:{'Content-Type':'application/json',...(state.organizationId?{'x-workspace-id':state.organizationId}:{})},body:JSON.stringify({email:data.get('email'),role:data.get('role')})});const result=await response.json();if(!response.ok)throw Error(result.error?.message||'Invitation failed.');setEmail(String(data.get('email')));setLink(result.data.inviteUrl);
+ }catch(e){setError(e instanceof Error?e.message:'Invitation failed.')}finally{setBusy(false)}}
+ return <><button className="um-outline" onClick={()=>{setLink('');setError('');dialog.current?.showModal()}}>Invite user</button><dialog className="um-dialog" ref={dialog}><form onSubmit={submit}><div className="um-dialog-heading"><h2>Invite user</h2><button type="button" disabled={busy} onClick={()=>dialog.current?.close()}>Close</button></div>{link?<><p role="status">Invitation link created for {email}.</p><p>Share this link with them. They must sign in with this exact Google email to accept the role you selected. No email has been sent.</p><input aria-label="Invitation link" readOnly value={link} onFocus={e=>e.target.select()}/><button type="button" onClick={()=>navigator.clipboard.writeText(link).catch(()=>setError('Select and copy the link above.'))}>Copy invitation link</button>{link.includes('localhost')&&<p>This local address only works on this computer. A hosted app URL is required for people on other computers.</p>}</>:<><p>Invite a Google account to your workspace. Create a personal invitation link to share with them.</p><label>Email address<input name="email" type="email" required disabled={busy}/></label><label>Role<select name="role" defaultValue="MEMBER" disabled={busy}><option value="MEMBER">Participant</option><option value="RESTRICTED_MEMBER">Restricted participant</option><option value="ORGANIZER">Organizer (MFA required)</option>{role==='PLATFORM_ADMIN'&&<option value="ORG_ADMIN">Admin (MFA required)</option>}</select></label><footer><button type="submit" disabled={busy}>{busy?'Creating link…':'Create invitation link'}</button></footer></>}{error&&<p role="alert">{error}</p>}</form></dialog></>;
+}
