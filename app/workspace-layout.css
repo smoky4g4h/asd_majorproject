@@ -1,0 +1,128 @@
+/* Persistent application chrome and fluid calendar layout. */
+:root{--workspace-rail:55px;--workspace-font:'DM Sans',sans-serif}
+html,body{margin:0;min-width:0;font-family:var(--workspace-font)}
+.product-shell{font-family:var(--workspace-font);min-height:100dvh;background:#fff}
+.product-shell>.product-rail{position:fixed;inset:0 auto 0 0;width:var(--workspace-rail);height:100dvh;z-index:60;overflow-y:auto;scrollbar-width:none}
+.product-shell>.product-rail .rail-brand{min-height:60px}
+.product-shell>.product-rail .rail-bottom{padding-top:8px;flex-shrink:0}
+.shell-content{margin-left:var(--workspace-rail);width:calc(100% - var(--workspace-rail));min-width:0;min-height:100dvh}
+.calendar-surface{height:100dvh}
+.calendar-surface[hidden],.workspace-surface[hidden]{display:none!important}
+.product-shell .app,.product-shell .room,.product-shell .login,.product-shell .reference-page,.product-shell .rc-dialog{font-family:var(--workspace-font)}
+.product-shell button,.product-shell input,.product-shell select,.product-shell textarea,.product-shell h1,.product-shell h2,.product-shell h3,.product-shell .person>span,.product-shell .person small,.product-shell .tile-name,.product-shell .rc-context-copy{font-family:var(--workspace-font)}
+.product-shell .app{min-height:100dvh}
+.product-shell .main{width:100%;min-width:0}
+.product-shell .topbar{min-width:0}
+.product-shell .content{min-width:0}
+.product-shell .room-columns{grid-template-columns:255px minmax(0,1fr) 315px}
+.reference-page,.reference-frame{width:100%;height:100%;max-width:none;min-width:0;padding:0;overflow:hidden;aspect-ratio:auto}
+.reference-workspace{position:relative;width:100%;height:100%;transform:none;grid-template-columns:306px minmax(0,1fr) 288px;grid-template-rows:minmax(0,1fr);overflow:hidden}
+.reference-workspace>.rc-sidebar,.reference-workspace>.rc-notes{height:100%;min-height:0;min-width:0;overflow-y:auto;overscroll-behavior:contain}
+.rc-main{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
+.rc-toolbar{flex:none;width:100%;height:auto;min-height:60px;flex-wrap:wrap;padding:10px 12px;row-gap:8px}
+.rc-toolbar h1{font-size:18px;min-width:0;white-space:nowrap}
+.rc-toolbar .rc-header-avatar{flex-shrink:0}
+.rc-toolbar .rc-view-switch{flex-shrink:0}
+.rc-day-headings{width:100%;height:68px;flex-shrink:0;box-sizing:border-box;overflow:hidden}
+.rc-day-headings>button{width:calc((100% - 50px)/7);min-width:0;flex-shrink:0;padding:10px 7px;gap:6px}
+.rc-day-headings>button>span{min-width:0}
+.rc-day-name{display:block;overflow:hidden;text-overflow:ellipsis}
+.rc-day-short{display:none}
+.rc-day-headings.single-day>button{width:calc(100% - 50px)}
+.rc-main .rc-timetable,.rc-main .rc-timetable.single-day{flex:1;min-height:0;width:100%;height:auto;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+.rc-main .rc-grid-lines{width:100%;height:949px;bottom:auto}
+.rc-hour>button{width:calc((100% - 50px)/7);min-width:0;flex-shrink:0}
+.rc-timetable.single-day .rc-hour button{width:calc(100% - 50px)}
+.rc-event{min-width:0;justify-content:flex-start}
+.rc-event-title{min-width:0;flex:1}
+.rc-faces{max-width:48%;overflow:hidden;flex-shrink:1;min-width:0}
+.rc-now-line{right:0}
+.rc-main .rc-month-view{width:100%;height:auto;flex:1;min-height:0}
+.rc-month-view>div{min-width:0}
+.rc-note-card h3{white-space:normal;overflow-wrap:anywhere}
+.rc-note-card label>span{min-width:0;overflow-wrap:anywhere}
+.rc-notes .rc-day-summary h2{font-size:29px;overflow-wrap:anywhere}
+.rc-notes .rc-day-summary{height:auto;min-height:262px}
+.rc-search{right:12px;max-width:calc(100% - 24px)}
+.rc-sidebar-toggle,.rc-notes-toggle,.rc-panel-close{display:none!important}
+.rc-popover{max-width:calc(100vw - 80px)}
+.product-shell .rc-dialog{max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:auto}
+.product-shell .rc-dialog input,.product-shell .rc-dialog select,.product-shell .rc-dialog textarea{font-family:var(--workspace-font)}
+@media(max-width:1500px){
+ .reference-workspace{grid-template-columns:260px minmax(0,1fr) 270px}
+ .rc-toolbar h1{font-size:16px}
+ .rc-toolbar{gap:5px;padding:9px}
+ .rc-toolbar .rc-view-switch button{padding:5px 9px}
+ .rc-toolbar .rc-square{width:30px}
+ .rc-day-name{display:none}.rc-day-short{display:block}
+ .rc-day-headings>button>span{font-size:11px}
+ .rc-event{font-size:13px;gap:4px!important;padding:5px!important}
+}
+@media(max-width:1250px){
+ .reference-workspace{grid-template-columns:240px minmax(0,1fr)}
+ .reference-workspace>.rc-notes{display:none}
+ .rc-toolbar .rc-notes-toggle{display:inline-flex!important}
+ .reference-workspace>.rc-notes.panel-open{display:block;position:absolute;right:0;top:60px;bottom:0;width:288px;max-width:100%;height:calc(100% - 60px);z-index:30;box-shadow:-8px 8px 28px #15152722}
+ .rc-notes .rc-panel-close{display:inline-flex!important;margin-left:auto;padding:3px;color:#666}
+ .rc-notes>header{gap:8px}
+ .rc-notes>header button{font-size:13px}
+ .product-shell .room-columns{grid-template-columns:190px minmax(0,1fr) 250px}
+}
+@media(max-width:1000px){
+ .reference-workspace{grid-template-columns:minmax(0,1fr)}
+ .reference-workspace>.rc-sidebar{display:none}
+ .rc-toolbar .rc-sidebar-toggle{display:inline-flex!important}
+ .reference-workspace>.rc-sidebar.panel-open{display:block;position:absolute;left:0;top:60px;bottom:0;width:306px;max-width:100%;height:calc(100% - 60px);z-index:30;box-shadow:8px 8px 28px #15152722}
+ .rc-sidebar .rc-panel-close{display:inline-flex!important}
+ .rc-workspace-heading{gap:7px}
+ .rc-workspace-heading strong{font-size:16px}
+ .rc-faces{max-width:40%}
+ .product-shell .topbar .search{max-width:240px}
+}
+@media(max-width:800px){
+ .product-shell .room-columns{grid-template-columns:minmax(0,1fr)}
+ .product-shell .room-columns>aside:first-of-type{display:none}
+ .product-shell .room-columns>aside:last-child{grid-column:auto}
+ .product-shell .topbar{padding:12px;gap:10px;height:auto;min-height:60px;flex-wrap:wrap}
+ .product-shell .content{padding:18px 12px}
+ .product-shell .heading{flex-wrap:wrap}
+ .product-shell .two{grid-template-columns:minmax(0,1fr)}
+ .product-shell .login{padding:24px 16px;margin:0}
+}
+@media(max-width:600px){
+ .rc-toolbar{gap:5px;padding:9px 8px}
+ .rc-toolbar h1{font-size:15px;flex:1}
+ .rc-toolbar .rc-today{font-size:12px;padding:5px 8px;margin-right:0}
+ .rc-toolbar .rc-square{width:29px;height:31px}
+ .rc-toolbar .rc-view-switch{order:5;margin-right:auto}
+ .rc-toolbar .rc-header-avatar{display:none}
+ .rc-toolbar .rc-notes-toggle{order:6}
+ .rc-toolbar .rc-options{order:7}
+ .rc-toolbar .rc-sidebar-toggle{font-size:12px;order:4}
+ .rc-toolbar>button[aria-label='Next week']{display:none}
+ .rc-toolbar>button[aria-label='Search calendar']{order:6}
+ .rc-day-headings>button{flex-direction:column;justify-content:center;padding:6px 1px;gap:0}
+ .rc-day-headings b{font-size:15px;padding:1px 3px}
+ .rc-day-headings>button>span{font-size:8px}
+ .rc-day-headings .focused b{padding:1px 3px}
+ .rc-day-headings i{gap:2px;margin-top:3px}
+ .rc-day-headings em{width:4px;height:4px}
+ .rc-day-headings.single-day>button{flex-direction:row;justify-content:start;padding:10px;gap:9px}
+ .rc-day-headings.single-day b{font-size:20px}
+ .rc-day-headings.single-day>button>span{font-size:12px}
+ .rc-day-headings.single-day .rc-day-name{display:block}.rc-day-headings.single-day .rc-day-short{display:none}
+ .rc-timetable:not(.single-day) .rc-faces{display:none}
+ .rc-timetable:not(.single-day) .event-emoji{width:17px;height:20px;flex:none}
+ .rc-timetable:not(.single-day) .rc-event{padding:3px!important;gap:2px!important}
+ .rc-timetable.single-day .rc-event{font-size:14px}
+ .rc-timetable.single-day .rc-faces{max-width:45%}
+ .rc-search{top:96px}
+ .reference-workspace>.rc-notes.panel-open,.reference-workspace>.rc-sidebar.panel-open{top:96px;height:calc(100% - 96px)}
+ .rc-month-view{grid-template-columns:repeat(7,minmax(0,1fr))}
+ .rc-month-view>div{padding:2px}.rc-month-view>div>button:not(.rc-event){font-size:9px;padding:4px 0}
+ .rc-month-view .rc-event{padding:2px!important}.rc-month-view .event-emoji{display:none}
+ .product-shell .profiles{grid-template-columns:minmax(0,1fr)}
+ .product-shell .form{padding:18px}
+ .product-shell .room header{flex-wrap:wrap;height:auto}
+}
+@media(min-width:601px) and (max-width:1000px){.rc-toolbar>button[aria-label='Next week'],.rc-toolbar .rc-header-avatar{display:none}.rc-toolbar .rc-view-switch button{padding:5px 8px}.rc-toolbar h1{font-size:15px}}
