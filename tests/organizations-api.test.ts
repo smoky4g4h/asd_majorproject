@@ -1,0 +1,15 @@
+import {beforeEach,it,expect,vi} from 'vitest';
+const mocks=vi.hoisted(()=>({actor:vi.fn(),set:vi.fn(),rpc:vi.fn()}));
+vi.mock('server-only',()=>({}));
+vi.mock('next/headers',()=>({cookies:async()=>({set:mocks.set})}));
+vi.mock('../lib/auth/session',()=>({requireActor:mocks.actor}));
+import {POST} from '../app/api/organizations/route';
+import {ApiError} from '../lib/api/errors';
+const source='00000000-0000-4000-8000-000000000001',target='00000000-0000-4000-8000-000000000002';
+const request=(data:unknown,origin='http://localhost:3000')=>new Request('http://localhost:3000/api/organizations',{method:'POST',headers:{origin,'content-type':'application/json'},body:JSON.stringify(data)});
+beforeEach(()=>{vi.resetAllMocks();mocks.actor.mockResolvedValue({db:{rpc:mocks.rpc},actor:{organizationId:source}});mocks.rpc.mockResolvedValue({data:target,error:null})});
+it('validates switch membership before storing a cookie',async()=>{mocks.actor.mockRejectedValue(new ApiError(403,'FORBIDDEN','Denied'));expect((await POST(request({action:'switch',organizationId:target}))).status).toBe(403);expect(mocks.actor).toHaveBeenCalledWith(target);expect(mocks.set).not.toHaveBeenCalled()});
+it('creates using the authenticated source and selects only the returned new organization',async()=>{expect((await POST(request({action:'create',name:'Group',icon:'blue'}))).status).toBe(200);expect(mocks.rpc).toHaveBeenCalledWith('create_organization',{p_source:source,p_name:'Group',p_icon:'blue'});expect(mocks.set).toHaveBeenCalledWith('securemeet-organization',target,expect.objectContaining({httpOnly:true,sameSite:'lax',path:'/'}))});
+it('does not change cookie when creation is refused',async()=>{mocks.rpc.mockImplementation(async(name:string)=>name==='create_organization'?{error:{code:'42501'}}:{error:null});expect((await POST(request({action:'create',name:'Group',icon:'blue'}))).status).toBe(403);expect(mocks.set).not.toHaveBeenCalled()});
+it('rejects cross-origin and forged platform-admin membership',async()=>{expect((await POST(request({action:'switch',organizationId:target},'https://attacker.example'))).status).toBe(403);expect((await POST(request({action:'member',organizationId:target,userId:source,role:'PLATFORM_ADMIN',active:true}))).status).toBe(422);expect(mocks.actor).not.toHaveBeenCalled()});
+it('explains why access cannot change during a live meeting',async()=>{mocks.rpc.mockImplementation(async(name:string)=>name==='manage_organization_member'?{error:{code:'22023',message:'End this member’s live meetings before changing access'}}:{error:null});const response=await POST(request({action:'member',organizationId:target,userId:source,role:'MEMBER',active:false}));expect(response.status).toBe(409);expect((await response.json()).error.code).toBe('LIVE_MEETING')});
