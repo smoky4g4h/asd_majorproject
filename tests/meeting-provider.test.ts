@@ -1,0 +1,12 @@
+import {beforeEach,it,expect,vi} from 'vitest';
+vi.mock('server-only',()=>({}));
+const mock=vi.hoisted(()=>({listParticipants:vi.fn(),deleteRoom:vi.fn(),removeParticipant:vi.fn(),getParticipant:vi.fn(),mutePublishedTrack:vi.fn()}));
+vi.mock('livekit-server-sdk',async importOriginal=>{const actual=await importOriginal<typeof import('livekit-server-sdk')>();return {...actual,RoomServiceClient:class{listParticipants=mock.listParticipants;deleteRoom=mock.deleteRoom;removeParticipant=mock.removeParticipant;getParticipant=mock.getParticipant;mutePublishedTrack=mock.mutePublishedTrack}}});
+import {ServerError,TrackSource} from 'livekit-server-sdk';
+import {endRoom,muteTrack,removeFromRoom} from '../lib/meeting-media/provider';
+beforeEach(()=>{vi.resetAllMocks();mock.listParticipants.mockResolvedValue([]);vi.stubEnv('LIVEKIT_URL','wss://test.livekit.cloud');vi.stubEnv('LIVEKIT_API_KEY','key');vi.stubEnv('LIVEKIT_API_SECRET','secret')});
+it('ending a room that never started is already complete',async()=>{mock.deleteRoom.mockRejectedValue(new ServerError('not found','room absent',404,'not_found'));await expect(endRoom('room')).resolves.toBeUndefined()});
+it('does not treat provider outage as ended',async()=>{mock.deleteRoom.mockRejectedValue(new ServerError('unavailable','unavailable',503,'unavailable'));await expect(endRoom('room')).rejects.toThrow()});
+it('removal includes a cutoff covering tokens issued during the current second',async()=>{const now=Math.floor(Date.now()/1000);await removeFromRoom('room','user');expect(mock.removeParticipant.mock.calls[0][2].revokeTokenTs).toBeGreaterThan(BigInt(now))});
+it('will not mute a camera track or another participant track',async()=>{mock.getParticipant.mockResolvedValue({tracks:[{sid:'video',source:TrackSource.CAMERA}]});await expect(muteTrack('room','user','video')).rejects.toMatchObject({code:'INVALID_TRACK'});expect(mock.mutePublishedTrack).not.toHaveBeenCalled()});
+it('mutes only the confirmed microphone publication',async()=>{mock.getParticipant.mockResolvedValue({tracks:[{sid:'mic',source:TrackSource.MICROPHONE}]});await muteTrack('room','user','mic');expect(mock.mutePublishedTrack).toHaveBeenCalledWith('room','user','mic',true)});
