@@ -5,23 +5,6 @@ React, TypeScript, Supabase Auth/Postgres and LiveKit. It includes Google sign-i
 organization workspaces, manual personal invitation links, authorized meetings,
 persistent direct and room messaging, tasks and an organization calendar.
 
-## Source and migration provenance
-
-This repository imports existing implementation from
-https://github.com/iconicvenom/AICTE_Secure_meet at main commit
-`dd45bcabfb410b5a7efd0730c6578c1ab7a22322` (November 13, 2026 inspection).
-Its tree equals the merged `v2/stable-release` commit
-`257c5e11d85513ca7c08a813e7208edf96f01d43`.
-Import commits identify the person who performed the transfer. They do not claim
-that existing implementation was newly authored during the migration.
-Original development history remains in the source repository.
-
-The export carries 172 unchanged published files plus this README, a minimal
-AGENTS.md and a clean .gitignore. Historical prompt masters, AI tool skill folders,
-session journals, old implementation plans and generated reports are excluded.
-Original design references remain in the source repository; all five runtime
-images under public/reference-assets remain included.
-
 ## Local setup
 
 Install a Node.js release compatible with package-lock.json and npm. Install
