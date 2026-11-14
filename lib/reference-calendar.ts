@@ -1,0 +1,28 @@
+export type CalendarEvent={id:string;title:string;emoji:string;day:number;hour:number;minute?:number;duration:number;tone:'blue'|'purple'|'pink'|'mint'|'amber';people?:number;extra?:string;category:string};
+export const referenceEvents:CalendarEvent[]=[
+{id:'r1',title:'Daily Standup',emoji:'🎃',day:0,hour:9,duration:1.75,tone:'blue',people:4,extra:'+5',category:'My Calendar'},
+{id:'r2',title:'Review Session',emoji:'🌚',day:0,hour:14,duration:.95,tone:'purple',category:'Client Work'},
+{id:'r3',title:'1:1 with Aron',emoji:'🥎',day:0,hour:15,duration:1.6,tone:'mint',people:2,category:'Personal'},
+{id:'r4',title:'Some Holiday',emoji:'🌚',day:1,hour:8,duration:.95,tone:'amber',category:'Personal'},
+{id:'r5',title:'Lunch with Client',emoji:'🎃',day:1,hour:12,duration:1.75,tone:'amber',people:4,category:'Client Work'},
+{id:'r6',title:'1:1 with Senior',emoji:'🥎',day:1,hour:14,duration:1.65,tone:'mint',people:2,category:'My Calendar'},
+{id:'r7',title:'Team Huddle',emoji:'🗂️',day:1,hour:16,duration:1.9,tone:'amber',people:5,category:'Team Sprints'},
+{id:'r8',title:'Gym Session',emoji:'🌚',day:1,hour:18,duration:1,tone:'pink',category:'Personal'},
+{id:'r9',title:'Marketing Session',emoji:'🥎',day:2,hour:9,duration:1.45,tone:'mint',people:3,extra:'+12',category:'Team Sprints'},
+{id:'r10',title:'Presentation',emoji:'🎃',day:2,hour:13,duration:1.8,tone:'blue',people:4,extra:'+5',category:'My Calendar'},
+{id:'r11',title:'Sharing Session with Thomas',emoji:'🥎',day:2,hour:19,duration:2.7,tone:'mint',people:4,extra:'+2',category:'My Calendar'},
+{id:'r12',title:'Sprint Planning',emoji:'🎃',day:3,hour:10,duration:1.55,tone:'amber',people:3,category:'Team Sprints'},
+{id:'r13',title:'1:1 with Senior',emoji:'🥎',day:3,hour:11,duration:1.3,tone:'mint',people:2,category:'Client Work'},
+{id:'r14',title:'Marketing Session',emoji:'🎃',day:3,hour:12,duration:2,tone:'amber',people:3,category:'Team Sprints'},
+{id:'r15',title:'Review Session',emoji:'🌚',day:3,hour:14,duration:1,tone:'purple',category:'Client Work'},
+{id:'r16',title:'Presentation Discuss',emoji:'🎃',day:3,hour:16,duration:3,tone:'blue',people:5,extra:'+5',category:'My Calendar'},
+{id:'r17',title:'Team Huddle',emoji:'🎃',day:3,hour:17,duration:1.8,tone:'blue',people:3,category:'Team Sprints'},
+{id:'r18',title:'Gym Session',emoji:'🌚',day:3,hour:18,duration:.95,tone:'pink',category:'Personal'},
+{id:'r19',title:'Review Session',emoji:'🌚',day:4,hour:9,duration:.95,tone:'purple',category:'Client Work'},
+{id:'r20',title:'Sprint Planning',emoji:'🗂️',day:4,hour:14,duration:1.5,tone:'amber',people:2,category:'Team Sprints'},
+{id:'r21',title:'Gym Session',emoji:'🌚',day:5,hour:9,duration:1.4,tone:'pink',category:'Personal'},
+{id:'r22',title:'Presentation',emoji:'🎃',day:5,hour:13,duration:1.7,tone:'blue',people:3,category:'My Calendar'},
+{id:'r23',title:'Gym Session',emoji:'🌚',day:5,hour:14,minute:35,duration:1.35,tone:'pink',category:'Personal'},
+{id:'r24',title:'Gym Session',emoji:'🌚',day:5,hour:19,duration:1.35,tone:'pink',category:'Personal'},
+{id:'r25',title:'Gym Session',emoji:'🌚',day:6,hour:10,duration:1,tone:'pink',category:'Personal'}];
+export const initialChecklists=[{title:'Team Huddle',emoji:'🗂️',tone:'amber',time:'09:15 AM',items:[{text:'Paste new screens on client file',done:false},{text:'Change color of primary CTAs',done:false},{text:'Make the logo bigger',done:true},{text:'Use Poppins instead of Inter',done:true},{text:'But why?',done:false}]},{title:'Presentation Discuss',emoji:'🎃',tone:'blue',time:'11:30 AM',items:[{text:'Handoff date changed to Thu 16',done:false},{text:'Switch the font to Montserrat for the better readability',done:false},{text:'Consider using Roboto for a more modern look',done:false},{text:'Change color of primary CTAs',done:false},{text:'But why?',done:false}]}];
