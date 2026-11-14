@@ -1,0 +1,71 @@
+/* Scoped additions preserve the existing dark room shell and three-column layout. */
+.live-meeting{--lk-bg:#101214;--lk-bg2:#1c2024;--lk-fg:#e4e7ec;--lk-border-color:#343943;--lk-accent-bg:#69bba6;--lk-accent-fg:#071d17;min-height:calc(100dvh - 65px)}
+.room.live-meeting .live-room-header{height:auto;min-height:52px;flex-wrap:wrap}
+.live-room-header a,.live-back{font-size:12px;text-decoration:underline;text-underline-offset:3px}
+.live-meeting .live-room-alert{position:static;margin:12px 18px;padding:12px 16px;background:#382423;color:#ffd6cc;border:1px solid #71463e;border-radius:5px;font-size:13px;overflow-wrap:anywhere}
+.live-meeting .live-connection{padding:10px 18px;color:#bed9cf;font-size:12px;border-bottom:1px solid #282b32}
+.live-meeting .live-lobby{max-width:760px;width:100%;margin:auto;min-height:470px;padding:32px 24px}
+.live-meeting .live-lobby h1{font-size:24px;color:#e4e7ec}
+.live-meeting .live-lobby p{font-size:13px;max-width:600px}
+.live-meeting .live-lobby .lk-prejoin{max-width:100%;margin:12px auto 24px}
+.live-meeting .live-lobby .lk-prejoin .lk-video-container{min-height:180px}
+.live-meeting .live-back{display:block;margin-top:24px}
+.live-meeting .live-microphone-test{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:12px 0}
+.live-meeting .live-microphone-test small{width:100%;color:#a1a9b4}
+.live-meeting .live-microphone-test label{display:flex;align-items:center;gap:8px;font-size:12px}
+.live-meeting .live-admissions{margin-top:24px}
+.live-meeting .live-admissions article{padding:12px 0;border-bottom:1px solid #30343b}
+.live-meeting .live-admissions strong,.live-meeting .live-admissions small{display:block;overflow-wrap:anywhere}
+.live-meeting .live-admissions article>div,.live-meeting .live-person>div{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.live-meeting .live-admissions button,.live-meeting .live-person button{font-size:11px;padding:7px 9px}
+.live-meeting .live-person{padding:12px 0;border-bottom:1px solid #282b32;overflow-wrap:anywhere;font-size:12px}
+.live-meeting .live-stage{min-width:0;min-height:560px}
+.live-meeting .live-track-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-content:start;flex:1;min-height:250px}
+.live-meeting .live-track-grid .lk-participant-tile{min-width:0;min-height:170px;aspect-ratio:16/10;border-radius:3px;overflow:hidden;background:#1c2228}
+.live-meeting .live-track-grid video{object-fit:cover;width:100%;height:100%}
+.live-meeting .live-layout-speaker .lk-participant-tile:first-child{grid-column:1/-1;min-height:300px}
+.live-meeting .live-layout-focus{grid-template-columns:minmax(0,1fr)}
+.live-meeting .live-layout-focus .lk-participant-tile{min-height:380px}
+.live-meeting .live-focus-select{display:flex;align-items:center;gap:12px;margin:0 0 16px;font-size:12px}
+.live-meeting .live-focus-select select{min-width:0;max-width:100%;background:#20252b;color:#e4e7ec;border-color:#343943}
+.live-meeting .lk-control-bar{flex-wrap:wrap;padding:15px 0;border:0;margin-top:15px}
+.live-meeting .lk-button-group{display:flex}
+.live-meeting .lk-button-group button{min-height:40px}
+.live-meeting button.live-end{background:#432326;color:#ffd4d4;border-color:#6d363b;align-self:center;margin:6px 0 14px}
+.live-meeting .live-context{font-size:12px;overflow-wrap:anywhere}
+.live-meeting .live-context .notice{display:block;text-decoration:underline;text-underline-offset:3px}
+.live-meeting button:focus-visible,.live-meeting a:focus-visible,.live-meeting input:focus-visible,.live-meeting select:focus-visible{outline:2px solid #9bddca;outline-offset:3px}
+@media(min-width:1500px){.live-meeting .live-track-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.live-meeting .live-layout-focus{grid-template-columns:1fr}}
+@media(max-width:900px){.product-shell .live-meeting .room-columns{grid-template-columns:minmax(0,1fr)}.product-shell .live-meeting .room-columns>.live-participants,.product-shell .live-meeting .live-lobby-columns>aside:first-of-type{display:block}.live-meeting .live-participants{max-height:280px;overflow:auto}.live-meeting .live-stage{min-height:420px}.live-meeting .live-lobby{padding:24px 16px}.live-meeting .live-track-grid .lk-participant-tile{min-height:140px}.live-meeting .live-layout-focus .lk-participant-tile{min-height:260px}}
+@media(max-width:450px){.live-meeting .live-track-grid{grid-template-columns:minmax(0,1fr)}.live-meeting .live-stage>.toolbar{height:auto;min-height:42px;flex-wrap:wrap}.live-meeting .live-focus-select{flex-wrap:wrap}.live-meeting .lk-prejoin .lk-button-group-container{flex-wrap:wrap}}
+
+.live-meeting .live-header-actions{margin-inline-start:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.live-meeting .live-header-actions button{font-size:12px;min-height:36px}
+.live-meeting .live-connected-columns>[hidden]{display:none!important}
+.live-meeting .live-stage>.toolbar{height:auto;min-height:48px;flex-wrap:wrap;gap:8px}
+.live-meeting .live-presenting .lk-participant-tile:first-child{grid-column:1/-1;aspect-ratio:16/9;min-height:280px}
+.live-meeting .live-presenting .lk-participant-tile:first-child video{object-fit:contain;background:#080a0c}
+.live-meeting:fullscreen{overflow:auto;width:100%;height:100%;background:#101214}
+.live-meeting .live-context input,.live-meeting .live-context textarea{background:#20252b;color:#e4e7ec;border-color:#454e58}
+.live-meeting .live-context .persistent-chat{padding:0}
+@media(max-width:1100px){.product-shell .live-meeting .live-connected-columns{grid-template-columns:minmax(0,1fr)!important}.live-meeting .live-stage{order:-1}.live-meeting .live-connected-columns>.live-context{display:block}.live-meeting .live-header-actions{margin-inline-start:0}.live-meeting .live-presenting .lk-participant-tile:first-child{min-height:180px}}
+@media(max-width:600px){.live-meeting .live-context input,.live-meeting .live-context textarea{font-size:16px}.live-meeting .live-stage>.toolbar button{min-height:40px}.live-meeting .live-header-actions button{min-height:40px}}
+
+/* Keep call controls in the viewport; the stage and side panels scroll independently. */
+.room.live-meeting.live-call{height:calc(100dvh - var(--workspace-header,70px));min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.live-call:fullscreen{height:100dvh!important}
+.live-call .live-room-header,.live-call .live-connection{flex-shrink:0}
+.live-call .live-connected-columns{flex:1;min-height:0;overflow:hidden;position:relative}
+.live-call .live-connected-columns>aside{grid-column:auto;min-height:0;margin:0;overflow:auto}
+.live-call .live-stage{min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.live-call .live-stage>.toolbar{flex-shrink:0;margin-bottom:10px}
+.live-call .live-track-grid{min-height:0;overflow:auto;grid-auto-rows:minmax(0,1fr)}
+.live-call .live-track-grid .lk-participant-tile{min-height:0;aspect-ratio:auto;height:100%;width:100%;border-radius:10px}
+.live-call .live-presenting{grid-template-rows:minmax(0,2fr) minmax(0,1fr)}
+.live-call .live-layout-focus{grid-template-rows:minmax(0,1fr)}
+.live-call .lk-control-bar{flex-shrink:0;margin:8px 0 0;padding:8px 0}
+.live-call button.live-end{flex-shrink:0;margin:0 0 4px}
+.live-meeting .live-panel-close{float:right;font-size:12px;min-height:32px;margin-bottom:8px}
+@media(max-width:1100px){.live-call .live-connected-columns>aside{position:absolute;inset-block:0;inset-inline-end:0;width:min(320px,100%);max-height:none;z-index:10;background:#171c21;border-inline-start:1px solid #454e58}.live-call .live-track-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.live-call .live-layout-focus{grid-template-columns:minmax(0,1fr)}.live-call .live-room-header{padding:8px 10px;gap:8px}.live-call .live-header-actions{gap:8px}.live-call .live-header-actions button{font-size:11px}.live-call .live-stage>.toolbar{margin-bottom:8px}.live-call .live-stage>.toolbar button{font-size:11px;text-transform:none;border-radius:6px;padding:6px 9px}}
+.live-call .live-presenting .lk-participant-tile:first-child{min-height:0;aspect-ratio:auto}
+.live-call>.lk-room-container{flex:1;min-height:0;height:auto;display:flex;flex-direction:column;overflow:hidden}

@@ -1,0 +1,12 @@
+import {beforeEach,it,expect,vi} from 'vitest';
+vi.mock('server-only',()=>({}));
+const m=vi.hoisted(()=>({actor:vi.fn(),end:vi.fn()}));
+vi.mock('../lib/auth/session',()=>({requireActor:m.actor}));
+vi.mock('../lib/meeting-media/provider',()=>({endRoom:m.end}));
+import {POST} from '../app/api/meetings/[id]/cancel/route';
+const id='00000000-0000-4000-8000-000000000001';
+const rpc=vi.fn();const req=()=>new Request('http://localhost:3000/api/meetings/'+id+'/cancel',{method:'POST',headers:{origin:'http://localhost:3000','content-type':'application/json'},body:'{}'});const ctx={params:Promise.resolve({id})};
+beforeEach(()=>{vi.resetAllMocks();rpc.mockImplementation(async name=>({data:name==='admin_cancel_meeting'?{roomName:'room',memberIds:[id],operationId:id}:null,error:null}));m.actor.mockResolvedValue({actor:{organizationId:id,role:'ORG_ADMIN',aal:'aal2'},db:{rpc}});});
+it('cancels then closes media and acknowledges cleanup',async()=>{expect((await POST(req(),ctx)).status).toBe(200);expect(rpc).toHaveBeenCalledWith('admin_cancel_meeting',{p_org:id,p_id:id});expect(m.end).toHaveBeenCalledWith('room',[id]);expect(rpc).toHaveBeenCalledWith('complete_media_operation',{p_id:id});});
+it('rejects organizers before touching meeting state',async()=>{m.actor.mockResolvedValue({actor:{role:'ORGANIZER',aal:'aal2'},db:{rpc}});expect((await POST(req(),ctx)).status).toBe(403);expect(rpc).not.toHaveBeenCalled();});
+it('reports persisted cancellation with pending cleanup on provider failure',async()=>{m.end.mockRejectedValue(Error('offline'));const r=await POST(req(),ctx);expect(r.status).toBe(503);expect((await r.json()).error.code).toBe('MEDIA_PENDING');expect(rpc).not.toHaveBeenCalledWith('complete_media_operation',expect.anything());});
